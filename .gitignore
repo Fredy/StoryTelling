@@ -26,3 +26,6 @@ hs_err_pid*
 /mvnw.cmd
 /mvnw
 /.mvn/
+
+# Database files
+/database
