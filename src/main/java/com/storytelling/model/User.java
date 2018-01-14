@@ -7,6 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -28,6 +31,13 @@ public class User {
   @OneToMany(mappedBy = "user")
   private List<VoteFrag> voteFragList;
 
+  @ManyToMany
+  @JoinTable(
+      name = "following",
+      joinColumns = @JoinColumn(name = "follower_id", referencedColumnName = "id"),
+      inverseJoinColumns = @JoinColumn(name = "followed_id", referencedColumnName = "id"))
+  private List<User> following;
+
   @Column(name = "username")
   private String username;
 
@@ -47,6 +57,7 @@ public class User {
   public User() {
     voteFragList = new ArrayList<>();
     votePropList = new ArrayList<>();
+    following = new ArrayList<>();
   }
 
   public Long getId() {
@@ -111,5 +122,13 @@ public class User {
 
   public void setVoteFragList(List<VoteFrag> voteFragList) {
     this.voteFragList = voteFragList;
+  }
+
+  public List<User> getFollowing() {
+    return following;
+  }
+
+  public void setFollowing(List<User> following) {
+    this.following = following;
   }
 }
