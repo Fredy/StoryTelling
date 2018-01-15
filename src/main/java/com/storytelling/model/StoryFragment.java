@@ -25,6 +25,10 @@ public class StoryFragment {
   private Long id;
 
   @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
+
+  @ManyToOne
   @JoinColumn(name = "story_prop_id")
   private StoryProposition storyProposition;
 
@@ -80,5 +84,13 @@ public class StoryFragment {
 
   public void setVoteList(List<VoteFrag> voteList) {
     this.voteList = voteList;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 }

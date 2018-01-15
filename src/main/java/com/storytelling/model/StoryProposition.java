@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -21,6 +23,10 @@ public class StoryProposition {
   @GeneratedValue(generator = "native")
   @GenericGenerator(name = "native", strategy = "native")
   private Long id;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
   @OneToMany(mappedBy = "storyProposition")
   private List<StoryFragment> fragmentList;
@@ -78,5 +84,13 @@ public class StoryProposition {
 
   public void setVoteList(List<VoteProp> voteList) {
     this.voteList = voteList;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 }

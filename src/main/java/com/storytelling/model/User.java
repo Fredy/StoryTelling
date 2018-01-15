@@ -31,6 +31,12 @@ public class User {
   @OneToMany(mappedBy = "user")
   private List<VoteFrag> voteFragList;
 
+  @OneToMany(mappedBy = "user")
+  private List<StoryProposition> propList;
+
+  @OneToMany(mappedBy = "user")
+  private List<StoryFragment> fragList;
+
   @ManyToMany
   @JoinTable(
       name = "following",
@@ -130,5 +136,21 @@ public class User {
 
   public void setFollowing(List<User> following) {
     this.following = following;
+  }
+
+  public List<StoryProposition> getPropList() {
+    return propList;
+  }
+
+  public void setPropList(List<StoryProposition> propList) {
+    this.propList = propList;
+  }
+
+  public List<StoryFragment> getFragList() {
+    return fragList;
+  }
+
+  public void setFragList(List<StoryFragment> fragList) {
+    this.fragList = fragList;
   }
 }

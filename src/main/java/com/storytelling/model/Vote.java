@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import org.hibernate.annotations.GenericGenerator;
 
 @MappedSuperclass
@@ -22,6 +24,7 @@ public abstract class Vote {
   protected User user;
 
   @Column(name = "vote_date")
+  @Temporal(TemporalType.TIMESTAMP)
   protected Date voteDate;
 
   @Column(name = "upvoted")
