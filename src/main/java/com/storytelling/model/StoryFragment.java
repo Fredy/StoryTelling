@@ -1,5 +1,8 @@
 package com.storytelling.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,10 +29,14 @@ public class StoryFragment {
 
   @ManyToOne
   @JoinColumn(name = "user_id")
+  @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+  @JsonIdentityReference(alwaysAsId = true)
   private User user;
 
   @ManyToOne
   @JoinColumn(name = "story_prop_id")
+  @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+  @JsonIdentityReference(alwaysAsId = true)
   private StoryProposition storyProposition;
 
   @OneToMany(mappedBy = "storyFragment")
