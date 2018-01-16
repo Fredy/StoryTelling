@@ -53,6 +53,13 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>io.codearte.jfairy</groupId>
+      <artifactId>jfairy</artifactId>
+      <version>0.5.9</version>
+    </dependency>
+
   </dependencies>
 
   <build>
