@@ -1,5 +1,6 @@
 package com.storytelling.rest;
 
+import com.storytelling.helpers.RequestUser;
 import com.storytelling.model.User;
 import com.storytelling.service.UserService;
 import java.util.Date;
@@ -7,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,27 +25,21 @@ public class UserRest {
   /**
    * Create a new user in the database.
    *
-   * @param email User's email.
-   * @param username User's username.
-   * @param firstName User's first name.
-   * @param lastName User's last name.
+   * @param requestUser An object that contains username, firstName, lastName and email.
    * @return Status 200 (OK) if the new user is correctly saved on the database, or 409 (CONFLICT)
    * if there is an existing user with the same username in the database.
    */
   @RequestMapping(value = "/new", method = RequestMethod.POST)
-  public ResponseEntity newUser(@RequestParam(value = "email") String email,
-      @RequestParam(value = "username") String username,
-      @RequestParam(value = "firstName") String firstName,
-      @RequestParam(value = "lastName") String lastName) {
+  public ResponseEntity newUser(@RequestBody RequestUser requestUser) {
 
-    if (this.service.usernameExist(username)) {
+    if (this.service.usernameExist(requestUser.getUsername())) {
       return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
     User user = new User();
-    user.setEmail(email);
-    user.setFirstName(firstName);
-    user.setLastName(lastName);
-    user.setUsername(username);
+    user.setEmail(requestUser.getEmail());
+    user.setFirstName(requestUser.getFirstName());
+    user.setLastName(requestUser.getLastName());
+    user.setUsername(requestUser.getUsername());
     user.setSignDate(new Date());
 
     this.service.save(user);
@@ -104,43 +101,42 @@ public class UserRest {
    * Update an existing user.
    *
    * @param id User's id.
-   * @param email User's email.
-   * @param username User's username.
-   * @param firstName User's first name.
-   * @param lastName User's last name.
+   * @param requestUser An object that contains username, firstName, lastName and email.
    * @return The updated user and http status, 404 (NOT FOUND) means that a user with the passed id
    * doesn't exist, 409 (CONFLICT) means that there is an existing user with the same username in
    * the database, 200 (OK) if the changes where saved in the database.
    */
   @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
-  public ResponseEntity update(@PathVariable("id") Long id,
-      @RequestParam(value = "email", required = false, defaultValue = "") String email,
-      @RequestParam(value = "username", required = false, defaultValue = "") String username,
-      @RequestParam(value = "firstName", required = false, defaultValue = "") String firstName,
-      @RequestParam(value = "lastName", required = false, defaultValue = "") String lastName) {
+  public ResponseEntity update(@PathVariable("id") Long id, @RequestBody RequestUser requestUser) {
     User user = this.service.findById(id);
     if (user == null) {
       return ResponseEntity.notFound().build();
     }
 
-    if (!email.isEmpty()) {
-      user.setEmail(email);
+    if (!requestUser.getEmail().isEmpty()) {
+      user.setEmail(requestUser.getEmail());
     }
-    if (!username.isEmpty()) {
-      if (this.service.usernameExist(username)) {
+    if (!requestUser.getUsername().isEmpty()) {
+      if (this.service.usernameExist(requestUser.getUsername())) {
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
       }
-      user.setUsername(username);
+      user.setUsername(requestUser.getUsername());
     }
-    if (!firstName.isEmpty()) {
-      user.setFirstName(firstName);
+    if (!requestUser.getFirstName().isEmpty()) {
+      user.setFirstName(requestUser.getFirstName());
     }
-    if (!lastName.isEmpty()) {
-      user.setLastName(lastName);
+    if (!requestUser.getLastName().isEmpty()) {
+      user.setLastName(requestUser.getLastName());
     }
 
     this.service.save(user);
     return ResponseEntity.ok(user);
   }
 
+  @RequestMapping(value = "/all", method = RequestMethod.GET)
+  public ResponseEntity all() {
+    return ResponseEntity.ok(this.service.findAll());
+  }
+
+  // TODO: follows
 }
