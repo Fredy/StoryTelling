@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserRest {
 
   @Autowired
-  UserService service;
+  private UserService service;
 
   /**
    * Create a new user in the database.
@@ -60,7 +60,7 @@ public class UserRest {
   public ResponseEntity userId(@PathVariable("id") Long id) {
     User user = this.service.findById(id);
     if (user == null) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+      return ResponseEntity.notFound().build();
     } else {
       return ResponseEntity.ok(user);
     }
@@ -77,7 +77,7 @@ public class UserRest {
   public ResponseEntity userUsername(@RequestParam(value = "username") String username) {
     User user = this.service.findByUsername(username);
     if (user == null) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+      return ResponseEntity.notFound().build();
     } else {
       return ResponseEntity.ok(user);
     }
@@ -142,6 +142,5 @@ public class UserRest {
     this.service.save(user);
     return ResponseEntity.ok(user);
   }
-
 
 }

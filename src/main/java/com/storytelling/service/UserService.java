@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
   @Autowired
-  UserRepository repository;
+  private UserRepository repository;
 
   public List<User> findAll() {
     return this.repository.findAll();
