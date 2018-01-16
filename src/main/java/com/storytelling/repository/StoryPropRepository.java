@@ -7,8 +7,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface StoryPropRepository extends PagingAndSortingRepository<StoryProposition, Long> {
 
-  StoryProposition findById(Long id);
-
   // TODO: apply paging in this queries
   List<StoryProposition> findByPropTextContaining(String text);
 

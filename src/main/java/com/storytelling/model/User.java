@@ -44,7 +44,7 @@ public class User {
       inverseJoinColumns = @JoinColumn(name = "followed_id", referencedColumnName = "id"))
   private List<User> following;
 
-  @Column(name = "username")
+  @Column(name = "username", unique = true)
   private String username;
 
   @Column(name = "first_name")
@@ -61,9 +61,11 @@ public class User {
   private Date signDate;
 
   public User() {
-    voteFragList = new ArrayList<>();
-    votePropList = new ArrayList<>();
-    following = new ArrayList<>();
+    this.voteFragList = new ArrayList<>();
+    this.votePropList = new ArrayList<>();
+    this.propList = new ArrayList<>();
+    this.fragList = new ArrayList<>();
+    this.following = new ArrayList<>();
   }
 
   public Long getId() {
