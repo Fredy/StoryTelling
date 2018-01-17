@@ -93,7 +93,7 @@ public class StoryPropRest {
    * @return Status 200 (OK) and list of story propositions if an user with the passed username
    * exists or Status 404 (NOT FOUND) if the user was not found.
    */
-  @RequestMapping(value = "/", method = RequestMethod.GET)
+  @RequestMapping(value = "/", method = RequestMethod.GET, params = "user")
   public ResponseEntity storyUsername(@RequestParam(value = "user") String username) {
     if (this.userService.findByUsername(username) == null) {
       return ResponseEntity.notFound().build();
@@ -109,7 +109,7 @@ public class StoryPropRest {
    * @return Status 200 (OK) and list of story propositions if an user with the passed id exists or
    * Status 404 (NOT FOUND) if the user was not found.
    */
-  @RequestMapping(value = "/", method = RequestMethod.GET)
+  @RequestMapping(value = "/", method = RequestMethod.GET, params = "user_id")
   public ResponseEntity storyUserId(@RequestParam(value = "user_id") Long userId) {
     if (this.userService.findById(userId) == null) {
       return ResponseEntity.notFound().build();
