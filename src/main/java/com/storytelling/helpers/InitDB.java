@@ -20,25 +20,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class InitDB {
 
-  @Autowired
-  UserRepository userRepository;
+  private final UserRepository userRepository;
+
+  private final StoryPropRepository propRepository;
+
+  private final StoryFragRepository fragRepository;
+
+  private Fairy fairy = Fairy.create();
 
   @Autowired
-  StoryPropRepository propRepository;
-
-  @Autowired
-  StoryFragRepository fragRepository;
-
-
-  Fairy fairy = Fairy.create();
+  public InitDB(UserRepository userRepository, StoryPropRepository propRepository,
+      StoryFragRepository fragRepository) {
+    this.userRepository = userRepository;
+    this.propRepository = propRepository;
+    this.fragRepository = fragRepository;
+  }
 
   @PostConstruct
-  void insertAll() {
+  public void insertAll() {
     List<User> users = this.insertUsers();
     this.insertStoriesProp(users);
   }
 
-  List<User> insertUsers() {
+  private List<User> insertUsers() {
     List<User> users = new ArrayList<>();
     for (int i = 1; i <= 10; i++) {
       Person person = this.fairy.person();
@@ -57,10 +61,10 @@ public class InitDB {
     return users;
   }
 
-  void insertStoriesProp(List<User> users) {
+  private void insertStoriesProp(List<User> users) {
     TextProducer text = this.fairy.textProducer();
     for (User user : users) {
-      System.out.printf("USER: %d",user.getId());
+      System.out.printf("USER: %d", user.getId());
       for (int i = 0; i < 5; i++) {
         StoryProposition proposition = new StoryProposition();
         proposition.setPropText(text.limitedTo(300).paragraph(190));
@@ -78,7 +82,7 @@ public class InitDB {
     System.out.println("DONE!");
   }
 
-  List<StoryFragment> insertStoryFrag(StoryProposition proposition, List<User> users) {
+  private void insertStoryFrag(StoryProposition proposition, List<User> users) {
     TextProducer text = this.fairy.textProducer();
     List<StoryFragment> fragments = new ArrayList<>();
 
@@ -95,9 +99,6 @@ public class InitDB {
       fragments.add(fragment);
     }
     this.fragRepository.save(fragments);
-    return fragments;
-
   }
-
 
 }
