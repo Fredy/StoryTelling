@@ -20,11 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/story")
 public class StoryPropRest {
 
-  @Autowired
-  private StoryPropService storyPropService;
+  private final StoryPropService storyPropService;
+
+  private final UserService userService;
 
   @Autowired
-  private UserService userService;
+  public StoryPropRest(StoryPropService storyPropService, UserService userService) {
+    this.storyPropService = storyPropService;
+    this.userService = userService;
+  }
 
   /**
    * Create a new Story proposition on the database.

@@ -18,8 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/user")
 public class UserRest {
 
+  private final UserService service;
+
   @Autowired
-  private UserService service;
+  public UserRest(UserService service) {
+    this.service = service;
+  }
 
   /**
    * Create a new user in the database.

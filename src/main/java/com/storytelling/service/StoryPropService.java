@@ -15,8 +15,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class StoryPropService {
 
+  private final StoryPropRepository repository;
+
   @Autowired
-  private StoryPropRepository repository;
+  public StoryPropService(StoryPropRepository repository) {
+    this.repository = repository;
+  }
 
   private void sortFragmentList(StoryProposition story) {
     story.getFragmentList().sort(Comparator.comparing(StoryFragment::getPubDate));
