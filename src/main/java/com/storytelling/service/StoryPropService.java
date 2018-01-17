@@ -23,7 +23,9 @@ public class StoryPropService {
   }
 
   private void sortFragmentList(StoryProposition story) {
-    story.getFragmentList().sort(Comparator.comparing(StoryFragment::getPubDate));
+    if (story != null) {
+      story.getFragmentList().sort(Comparator.comparing(StoryFragment::getPubDate));
+    }
   }
 
   public List<StoryProposition> findAll() {

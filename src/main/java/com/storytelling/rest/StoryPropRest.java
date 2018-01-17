@@ -2,6 +2,7 @@ package com.storytelling.rest;
 
 import com.storytelling.helpers.RequestStoryProp;
 import com.storytelling.model.StoryProposition;
+import com.storytelling.model.User;
 import com.storytelling.service.StoryPropService;
 import com.storytelling.service.UserService;
 import java.text.ParseException;
@@ -44,13 +45,15 @@ public class StoryPropRest {
         .isEmpty()) {
       return ResponseEntity.badRequest().build();
     }
-    if (this.userService.findById(requestStory.getUserId()) == null) {
+
+    User user = this.userService.findById(requestStory.getUserId());
+    if (user == null) {
       return ResponseEntity.notFound().build();
     }
 
     StoryProposition story = new StoryProposition();
     story.setPropText(requestStory.getText());
-    story.setUser(this.userService.findById(requestStory.getUserId()));
+    story.setUser(user);
     story.setPubDate(new Date());
 
     this.storyPropService.save(story);
@@ -62,8 +65,8 @@ public class StoryPropRest {
    * Find a story proposition by its id.
    *
    * @param id Story's id.
-   * @return Found story and http status, 404 (NOT FOUND) if a story proposition with the passed id
-   * doesn't exists, 200 (OK) if the story proposition was found.
+   * @return Found story and 200 (OK) if the story proposition was found, http status 404 (NOT
+   * FOUND) if a story proposition with the passed id doesn't exists.
    */
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   public ResponseEntity storyId(@PathVariable("id") Long id) {
@@ -157,6 +160,8 @@ public class StoryPropRest {
       return ResponseEntity.notFound().build();
     } else {
       story.setPropText(requestStory.getText());
+      this.storyPropService.save(story);
+
       return ResponseEntity.ok(story);
     }
   }
