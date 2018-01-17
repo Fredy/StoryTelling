@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,7 +26,7 @@ public class UserRest {
    *
    * @param requestUser An object that contains username, firstName, lastName and email.
    * @return Status 200 (OK) if the new user is correctly saved on the database, or 409 (CONFLICT)
-   * if there is an existing user with the same username in the database.
+   * if there is an existing user with the same username in the database, and the new user.
    */
   @RequestMapping(value = "/new", method = RequestMethod.POST)
   public ResponseEntity newUser(@RequestBody RequestUser requestUser) {
@@ -43,7 +42,7 @@ public class UserRest {
     user.setSignDate(new Date());
 
     this.service.save(user);
-    return ResponseEntity.ok(null);
+    return ResponseEntity.ok(user);
   }
 
   /**
@@ -51,7 +50,7 @@ public class UserRest {
    *
    * @param id User's id.
    * @return Found user and http status, 404 (NOT FOUND) if a user with the passed id doesn't
-   * exists, 202 (OK) if the user was found.
+   * exists, 200 (OK) if the user was found.
    */
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   public ResponseEntity userId(@PathVariable("id") Long id) {
@@ -68,7 +67,7 @@ public class UserRest {
    *
    * @param username User's username.
    * @return Found user and http status, 404 (NOT FOUND) if a user with the passed username doesn't
-   * exists, 202 (OK) if the user was found.
+   * exists, 200 (OK) if the user was found.
    */
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public ResponseEntity userUsername(@RequestParam(value = "username") String username) {
@@ -85,7 +84,7 @@ public class UserRest {
    *
    * @param id User's id.
    * @return List of story propositions or an empty list if the user doesn't exists, and http
-   * status, 404 (NOT FOUND) if a user with the passed id doesn't exists, 202 (OK) if the user was
+   * status, 404 (NOT FOUND) if a user with the passed id doesn't exists, 200 (OK) if the user was
    * found.
    */
   @RequestMapping(value = "/{id}/props", method = RequestMethod.GET)
@@ -113,19 +112,19 @@ public class UserRest {
       return ResponseEntity.notFound().build();
     }
 
-    if (!requestUser.getEmail().isEmpty()) {
+    if (requestUser.getEmail() != null) {
       user.setEmail(requestUser.getEmail());
     }
-    if (!requestUser.getUsername().isEmpty()) {
+    if (requestUser.getUsername() != null) {
       if (this.service.usernameExist(requestUser.getUsername())) {
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
       }
       user.setUsername(requestUser.getUsername());
     }
-    if (!requestUser.getFirstName().isEmpty()) {
+    if (requestUser.getFirstName() != null) {
       user.setFirstName(requestUser.getFirstName());
     }
-    if (!requestUser.getLastName().isEmpty()) {
+    if (requestUser.getLastName() != null) {
       user.setLastName(requestUser.getLastName());
     }
 

@@ -1,6 +1,7 @@
 package com.storytelling.helpers;
 
 public class RequestUser {
+
   private String username;
   private String firstName;
   private String lastName;

@@ -56,8 +56,9 @@ public class StoryPropService {
   }
 
   /**
-   * Receives two strings, formatted as "yyyy-MM-dd", that are parsed to dates. Return all the stories
-   * propositions that where created between {@code start}  and {@code end}.
+   * Receives two strings, formatted as "yyyy-MM-dd", that are parsed to dates. Return all the
+   * stories propositions that where created between {@code start}  and {@code end}.
+   *
    * @param start Start date, represented as "yyyy-MM-dd".
    * @param end End date, represented as "yyyy-MM-dd".
    * @return List of stories propositions.
