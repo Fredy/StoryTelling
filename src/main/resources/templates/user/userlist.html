@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en" th:include="fragments/header :: header-conf (pageCss= '/css/index.css')">
+  <title id="pageTitle">Users</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<main role="main" class="container">
+
+  <div class="row">
+
+    <!-- New story -->
+    <div class="col-md-4 mx-auto mb-3">
+
+      <div th:if="${messageNew != null}" th:text="${messageNew}"
+           class="my-1 text-center text-danger">
+      </div>
+      <div th:if="${messageOk != null}" th:text="${messageOk}"
+           class="my-1 text-center text-success">
+      </div>
+
+      <div id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="card">
+          <div class="card-header" role="tab" id="headingThree">
+            <h5 class="mb-0">
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                 href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                New user
+              </a>
+            </h5>
+          </div>
+          <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+            <div class="card-block">
+              <div class="well m-4">
+                <form th:method="post" th:action="@{/users}" role="form" th:object="${newUser}">
+                  <div class="form-group">
+                    <input th:name="username" type="text" class="form-control my-1"
+                           placeholder="username"
+                           th:field="*{username}">
+                    <input th:name="firstName" type="text" class="form-control my-1"
+                           placeholder="First name"
+                           th:field="*{firstName}">
+                    <input th:name="lastName" type="text" class="form-control my-1"
+                           placeholder="Last name"
+                           th:field="*{lastName}">
+                    <input th:name="email" type="email" class="form-control my-1"
+                           placeholder="email"
+                           th:field="*{email}">
+                  </div>
+                  <button type="submit" class="btn btn-primary"><i class="fa fa-reply"></i> Create
+                  </button>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="row">
+    <!-- Users -->
+    <div class="col-md-4 mx-auto" th:each="user : ${users}">
+      <div class="card mb-4">
+
+        <div class="card-block m-4">
+          <a th:href="@{'/user/' + ${user.id}}">
+            <h4 th:text="|${user.firstName} ${user.lastName}|" class="card-title">Name</h4>
+          </a>
+          <h6 th:text="${user.username}" class="card-subtitle mb-2 text-muted">Username</h6>
+
+          <p th:text="|Since ${#dates.format(user.signDate, 'yyyy-MM-dd')}|"
+             class="card-text">Date</p>
+          <p><em>
+            <strong th:text="${#lists.size(user.propList)}">props</strong>
+            Story propositions and
+            <strong th:text="${#lists.size(user.fragList)}">frags</strong>
+            fragments.</em></p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</main>
+
+</body>
+</html>

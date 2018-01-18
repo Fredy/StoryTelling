@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en" th:include="fragments/header :: header-conf (pageCss= '/css/index.css')">
+  <title id="pageTitle">Story</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<main role="main" class="container">
+
+  <div class="row">
+
+    <div class="col-10 mx-auto" th:object="${story}">
+      <!-- Proposition -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <p class="card-title" th:text="*{propText}"></p>
+        </div>
+        <div class="card-footer text-muted">
+          <span
+              th:text="|Posted on ${#dates.format(story.pubDate, 'MMMMMM dd, yyyy; hh:mm ')} by|"></span>
+          <a th:href="@{'/user/' + ${story.user.id}}"
+             th:text="|${story.user.firstName} ${story.user.lastName}|">User</a>
+        </div>
+      </div>
+
+      <!-- New fragment -->
+      <div class="well m-4">
+        <h4><i class="fa fa-paper-plane-o"></i> New fragment:</h4>
+
+        <div th:if="${messageWarn != null}" th:text="${messageWarn}"
+             class="my-1 text-center text-danger">
+        </div>
+        <div th:if="${messageOk != null}" th:text="${messageOk}"
+             class="my-1 text-center text-success">
+        </div>
+
+        <form th:method="post" th:action="@{'/story/' + ${story.id}}" role="form"
+              th:object="${newFrag}">
+          <div class="form-group">
+            <textarea th:name="text" class="form-control my-1" rows="3" th:maxlength="300"
+                      placeholder="Text" th:field="*{text}"></textarea>
+            <input th:name="userId" type="number" class="form-control my-1" placeholder="User Id"
+                   th:field="*{userId}">
+          </div>
+          <button type="submit" class="btn btn-primary my-1"><i class="fa fa-reply"></i> Submit
+          </button>
+        </form>
+      </div>
+
+      <!-- Fragments -->
+      <ul class="list-unstyled" th:each="frag : *{fragmentList}">
+        <li class="media">
+          <div class="media-body">
+            <hr class="mt-0">
+            <span th:text="${frag.fragText}">Fragment.</span>
+            <br>
+            <small class="my-0 text-secondary">
+              By
+              <a th:href="@{'/user/' + ${frag.user.id}}"
+                 th:text="|${frag.user.firstName} ${frag.user.lastName}|">User</a>
+              <span
+                  th:text="| on ${#dates.format(frag.pubDate, 'MMMMMM dd, yyyy; hh:mm ')}|"></span>
+            </small>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+
+
+  </div>
+
+</main>
+
+</body>
+</html>
+
+
+

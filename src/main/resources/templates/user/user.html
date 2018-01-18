@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en" th:include="fragments/header :: header-conf (pageCss= '/css/index.css')">
+  <title id="pageTitle">Users</title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<main role="main" class="container">
+
+  <div class="row">
+    <div th:if="${messageWarn != null}" th:text="${messageWarn}"
+         class="col-12 my-1 text-center text-danger">
+    </div>
+  </div>
+
+  <div th:if="${user} != null" class="col-8 mx-auto">
+    <div class="jumbotron" th:object="${user}">
+      <h1 th:text="|*{firstName} *{lastName}|" class="display-3">Name</h1>
+      <p class="text-secondary">
+        <span th:text="*{username}" class="h2">username</span>
+        <span th:text="|   Since ${#dates.format(user.signDate, 'yyyy-MM-dd')}|" class="h6"></span>
+      </p>
+      <p>
+        <span th:text="${#lists.size(user.propList)}" class="display-4">props</span>
+        <span class="h6">story propositions, and </span>
+        <span th:text="${#lists.size(user.fragList)}" class="display-4">frags</span>
+        <span class="h6">fragments.</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Stories -->
+  <div class="row">
+    <div class="col-md-4 mx-auto" th:if="${user} != null" th:each="story : ${user.propList}">
+      <div class="card mb-4">
+        <div class="card-body">
+          <p class="card-title" th:text="${story.propText}"></p>
+          <a th:href="@{'/story/' + ${story.id}}" class="btn btn-primary">Read More &rarr;</a>
+        </div>
+        <div class="card-footer text-muted">
+          <span
+              th:text="|Posted on ${#dates.format(story.pubDate, 'MMMMMM dd, yyyy; hh:mm ')}|"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

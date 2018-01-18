@@ -178,7 +178,6 @@ public class StoryPropRest {
     if (text.isEmpty()) {
       return ResponseEntity.badRequest().build();
     }
-    System.out.println(text);
     return ResponseEntity.ok(this.storyPropService.findByPropTextContaining(text));
   }
 

@@ -90,8 +90,8 @@ public class StoryFragRest {
    *
    * @param id Story fragment's id.
    * @param requestFrag An object that has text, propId, and userId.
-   * @return Status 200 (OK) and the story fragment that where updated, or status 404 (NOT FOUND)
-   * if the story fragment with the passed id doesn't exist.
+   * @return Status 200 (OK) and the story fragment that where updated, or status 404 (NOT FOUND) if
+   * the story fragment with the passed id doesn't exist.
    */
   @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
   public ResponseEntity update(@PathVariable("id") Long id,
