@@ -1,5 +1,10 @@
 # StoryTelling
 
+StoryTelling it's  like a blog for writing collaborative stories. An user can create a new Story 
+Proposition, that indicates the main theme of the story, other users can write Story
+Fragments in such a way that a story is constructed. The Story Propositions and Story 
+Fragments have a maximun lenght of 300 characters.
+
 ## How to compile
 
 * You need [maven](https://maven.apache.org/) installed.
